@@ -4,7 +4,7 @@
 		to make sure the admin wants you to see the page (as well as checking the page exists) and then uses the new build_page() function.
 	*/
 	function print_page($id) {
-		global $pages;
+		global $pages, $content;
 		$result = return_array("SELECT * FROM $pages WHERE id='$id' LIMIT 1", false);
 		$row = mysql_fetch_array($result, MYSQL_ASSOC);
 	
@@ -24,9 +24,9 @@
 			}
 		}
 		if ($row['type'] == 'content'){
-			$page_name = $row['name'];
+			$content = $row['content'];
 			$file = build_page("page");
-			eval("echo '".$file."';");
+			echo $file;
 		}
 		if ($row['type'] == 'function'){
 			eval($row['content']);
@@ -38,9 +38,10 @@
 		exit();
 	} else {
 		$wanted = $input[1];
-		$query = return_array("SELECT * FROM $pages WHERE url like '%$wanted%' LIMIT 1", false);
-		$page = mysql_fetch_array($query, MYSQL_ASSOC);
-		print_page($page['id']);
+		$query = return_array("SELECT id, name FROM $pages WHERE url like '%$wanted%' LIMIT 1", false);
+		$p = mysql_fetch_array($query, MYSQL_ASSOC);
+		$page_name = $p['name'];
+		print_page($p['id']);
 		exit();
 	}
 ?>
