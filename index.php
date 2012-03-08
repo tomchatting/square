@@ -1,7 +1,7 @@
 <?php
 	/*
-		The Bespoke Blog Engine - Version 1.0 (Square)
-		Last edited on the 13th November 2010
+		The Bespoke Blog Engine - Version 1.1 (Square)
+		Last edited on the 8th March 2012
 
 		------------------------------------------------------------------
 		This program is free software. It comes without any warranty, to
@@ -11,8 +11,8 @@
 		http://sam.zoy.org/wtfpl/COPYING for more details.
 	*/
 
-	// Small debugging script that posts the page load time - Uncommenting will invalidate the xHTML markup :(
-	$start_time = microtime(true); register_shutdown_function('my_shutdown'); function my_shutdown() {global $start_time; echo "<p style='text-align: right; font-style: italic; color: grey; font-size: 12px; clear: both;'>Page loaded in ".(round((microtime(true) - $start_time), 5))." seconds.</p>";}
+	// Small debugging script that posts the page load time - Uncommenting will invalidate the HTML markup :(
+	// $start_time = microtime(true); register_shutdown_function('my_shutdown'); function my_shutdown() {global $start_time; echo "<p style='text-align: right; font-style: italic; color: grey; font-size: 12px; clear: both;'>Page loaded in ".(round((microtime(true) - $start_time), 5))." seconds.</p>";}
 
 	ob_start(); 							/* Lets us change the headers further down */
 
