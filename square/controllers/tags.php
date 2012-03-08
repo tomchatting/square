@@ -1,6 +1,6 @@
 <?php
-	function print_tags($tag = '') {
-		global $posts, $order;
+	function print_tags_page($tag = '') {
+		global $posts, $order, $tag_name, $numInArray, $blogPost;
 		if(empty($tag)) {
 			header("Location: " . URL);
 		} else {
@@ -12,11 +12,12 @@
 				$numInArray ++;
 			}
 			$page_name = '#'.strtoupper($tag);
+			$tag_name = $tag;
 			mysql_free_result($result);
 			$file = build_page("tags");
-			eval("echo '".$file."';");
+			echo $file;
 		}
 	}
 	
-	print_tags($input[1]);
+	print_tags_page($input[1]);
 ?>
