@@ -1,47 +1,182 @@
 <?php
-	/*
-		If we were to run a process monitor on a system pushing out a page, I think it would be likely that this file would have the 
-		most time spent on it.
-		As part of making themes as easy as possible to make with HTML and CSS, I took the decision to not use PHP calls in the theme files,
-		this means that I can later change functions or calls without breaking old theme files, plus it only adds a fraction of a second to
-		the load time
+	/* 
+		WARNING: Here be dragons
+		This file is a test of what the original theme.php SHOULD have been.
+		Basically every XML Square tag is now based upon a function which is called when needed and simply
+			echoes an output. When the file is "parsed" it will then be nothing but HTML and text, ready to be
+			echoed to the user, no EV(A/I)Ls needed!
 	*/
 	
 	function parse_page($file_contents) {
+		global $result, $item, $page_name, $page, $content;
+		$res = $result;
 		$DateNow = date("Y-m-d");
 	
 		$file = parse_theme_template($file_contents);
 		
 		$find = array(
 			"<square:return_posts>".value_in('square:return_posts', $file)."</square:return_posts>",
-			'<square:foreach_post>',
-			'</square:foreach_post>',
-			'<square:if_zero_results>',
-			'</square:if_zero_results>',
-			'<square:foreach_result>',
-			'</square:foreach_result>'
+			"<square:foreach_post>".value_in('square:foreach_post', $file)."</square:foreach_post>",
+			"<square:prev_page />",
+			"<square:next_page />",
+			"<square:page_name />",
+			"<square:page_content />",
+			"<square:if_zero_results>".value_in('square:if_zero_results', $file)."</square:if_zero_results>",
+			"<square:foreach_result>".value_in('square:foreach_result', $file)."</square:foreach_result>"
 		);
 		$replace = array(
-			"'; \$result = return_array(\"SELECT * FROM \$posts WHERE `date` <= '$DateNow' AND `status` = 'publish' \$order LIMIT ".value_in('square:return_posts', $file)."\", false); echo'",
-			"'; while(\$item = mysql_fetch_array(\$result, MYSQL_ASSOC)) { echo '",
-			"'; } echo '",
-			"'; if (\$numInArray == 0) { echo '",
-			"'; } echo '",
-			"'; if (\$numInArray != 0) { foreach (\$blogPost as \$item) { echo '",
-			"'; }  } echo '"
+			$result = return_posts(value_in('square:return_posts', $file)),
+			foreach_post(value_in('square:foreach_post', $file), $res),
+			prev_page($page),
+			next_page($page),
+			$page_name,
+			$content,
+			zero_results(value_in('square:if_zero_results', $file)),
+			foreach_result(value_in('square:foreach_result', $file))
 		);
 		$file = preg_replace("/<square:get_post>([0-9]+)<\/square:get_post>/", "'; \$result = return_array(\"SELECT * FROM \$posts WHERE `date` <= '$DateNow' AND `status` = 'publish' \$order LIMIT $1,1 \", false); echo'", $file);
 		$file = str_replace($find, $replace, $file);
-	
-		if ($_COOKIE[COOKIE_NAME] == COOKIE_VALUE) {$file = str_replace("<square:article_edit_link />", "<a href=\"".URL.SOFT_NAME."/?cmd=edit&id='.\$item['id'].'\">Edit</a>", $file);} else {$file = str_replace("<square:article_edit_link />", "", $file);}
+		if ($item) {$file = build_post($item, $file);}
 
-		$file = replace_code_page($file);
+		//$file = replace_code_page($file);
 
 		return $file;
 	}
 	
+	function zero_results($file) {
+		global $numInArray;
+		if ($numInArray == 0) {
+			return $file;
+		}
+	}
+	
+	function foreach_result($file) {
+		global $numInArray, $blogPost;
+		if ($numInArray != 0) {
+			foreach ($blogPost as $item) {
+				$block .= build_post($item, $file);
+			}
+		}
+		return $block;
+	}
+	
+	function return_posts($num) {
+		return return_array("SELECT * FROM $posts WHERE `date` <= '$DateNow' AND `status` = 'publish' $order LIMIT $num", false);
+	}
+	
+	function foreach_post($repeating, $res) {
+		while($item = mysql_fetch_array($res, MYSQL_ASSOC)) {
+			$id = $item['id'];
+			$block .= build_post($item, $repeating);
+		}
+		
+		return $block;
+	}
+	
+	function build_post($item, $block) {
+		global $page, $row, $search, $numInArray;
+		$find = array(
+			'article_title',
+			'article_tags',
+			'article_date',
+			'article_date_short',
+			'article_wordcount',
+			'article_permalink',
+			'article_content',
+			'article_blurb',
+			'article_pagination',
+			'article_next',
+			'article_prev',
+			'article_comments',
+			'article_share'
+		);
+
+
+		$i = 0;
+		foreach ($find as $found) {
+			$find[$i] = '<square:'.$found.' />';
+			$i++;
+		}
+		
+		$replace = array(
+			$item['title'],
+			print_tags($item['tags']),
+			make_date($item['date-time'],$date_format),
+			make_date($item['date-time'],"d/m/Y"),
+			wordCount($item['content']),
+			get_short_url($item['id']),
+			$item['content'],
+			$item['blurb'],
+			'',
+			next_post($item['id']),
+			last_post($item['id']),
+			print_comments(),
+			'<hr /><div id="share"><p>'.wordCount($item['content']).' hand-crafted words went into this article, why not share them with a friend?</p><a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><div class="prevnext">'.next_post($item['id']+1).last_post($item['id']-1).'</div></div><hr />'
+		);
+		if ($_COOKIE[COOKIE_NAME] == COOKIE_VALUE) {$block = str_replace("<square:article_edit_link />", "<a href=\"".URL.SOFT_NAME."/?cmd=edit&id=".$item['id']."\">Edit</a>", $block);} else {$file = str_replace("<square:article_edit_link />", "", $block);}
+		return str_replace($find, $replace, $block);
+	}
+	
+	function prev_page($page = 1) {
+		if (($page-1) > 0) { 
+			return '<a href="'.archives_url($page-1).'" title="Newer">Newer</a>';
+		}
+	}
+	
+	function next_page($page) {
+		global $num, $posts, $order;
+		$start = ($page * $num);
+		
+		if ($res = return_array("SELECT * FROM $posts WHERE `status`='publish' $order LIMIT $start, $num", false)) {
+			if ($row = mysql_fetch_array($res, MYSQL_ASSOC)) { 
+				return '<a href="'.archives_url($page+1).'" title="Older">Older</a>'; 
+			}
+		}
+	}
+	
+	function print_tags($tags) {
+		$splitTags = explode(", ", $tags);
+		foreach ($splitTags as $tag){ 
+			$output .= tags_url($tag);
+		}
+		return $output; 
+	}
+	
+	function next_post($ids) {
+		global $posts;
+		$next_post = return_array("SELECT `title`, `url`, `status` FROM $posts WHERE `id`='$ids' LIMIT 1", false);
+		if ($token = mysql_fetch_array($next_post, MYSQL_ASSOC)) {
+			if ($token['status'] == 'publish') {
+				if (empty($token['title'])) {
+					$token['title'] = 'Untitled Post';
+				}
+				return '<a class="left" href="'.get_friendly_url($token['url']).'" title="'.htmlspecialchars($token['title']).'">&lt; '.myTruncate($token['title'],40).'</a>';
+			} 
+		} else {
+			return '<a class="left" href="#">This is the most recent post</a>';
+		}
+	}
+	
+	function last_post($ids) {
+		global $posts, $order;
+		if ($prev_post = return_array("SELECT `title`, `url`, `status` FROM $posts WHERE `id`='$ids'", false)) {
+			if ($token = mysql_fetch_array($prev_post, MYSQL_ASSOC)) {
+				if ($token['status'] == 'publish') {
+					if($token['id'] <> $id) {
+						if (empty($token['title'])) {
+							$item['title'] = 'Untitled Post';
+						}
+					}
+					return '<a class="right" href="'.get_friendly_url($token['url']).'" title="'.htmlspecialchars($token['title']).'">'.myTruncate($token['title'],40).' &gt;</a>';	
+				}
+			} else {
+				return '<a class="right" href="#">This is the oldest post</a>';
+			}
+		}
+	}
+	
 	function parse_theme_template($file) {
-		global $plug_list, $head_list;
+		global $plug_list, $head_list, $page_name, $tag_name, $numInArray, $search;
 
 		$find = array(
 			'url',
@@ -57,57 +192,10 @@
 			'archives_url',
 			'footer',
 			'version',
-			'site_footer'
-		);
-
-		$i = 0;
-		foreach ($find as $found) {
-			$find[$i] = '<square:'.$found.' />';
-			$i++;
-		}
-
-		$replace = array(
-			"'.URL.'",
-			"'.THEME_DIR.'",
-			"'.SITE_NAME.'",
-			"<link rel=\"stylesheet\" href=\"".URL."square/themes/'.\$theme.'/'.'>style.css\" type=\"text/css\" />",
-			"'.TAGLINE.'",
-			"'.\$page_name.'",
-			"<link rel=\"alternate\" type=\"application/rss+xml\" title=\"".SITE_NAME."\" href=\"".URL."feed/\" /><link rel=\"alternate\" type=\"application/atom+xml\" title=\"".SITE_NAME."\" href=\"".URL."feed/?atom\" />'.".$head_list."'",
-			"'.ucfirst(USERNAME).'",
-			"'.blog_nav().'",
-			"'.about_url().'",
-			"'.archives_url(1).'",
-			"'.user_footer().".$plug_list."'",
-			"'.VERSION.'",
-			'<a href="http://spoolio.co.cc/p/square/">:-)</a> '.HARD_NAME.' '.VERSION
-		);
-
-		return str_replace($find, $replace, $file);
-	}
-	
-	function replace_code_page($file) {
-		$find = array(
-			'article_title',
-			'article_tags',
-			'article_date',
-			'article_date_short',
-			'article_wordcount',
-			'article_permalink',
-			'article_content',
-			'article_blurb',
-			'article_pagination',
-			'article_next',
-			'article_prev',
-			'article_comments',
-			'article_share',
+			'site_footer',
 			'num_results',
 			'tag_search',
-			'search_term',
-			'page_title',
-			'page_content',
-			'prev_page',
-			'next_page'
+			'search_term'
 		);
 
 		$i = 0;
@@ -117,28 +205,25 @@
 		}
 
 		$replace = array(
-			"'.\$item['title'].'",
-			"'; \$splitTags = explode(\", \", \$item['tags']); foreach (\$splitTags as \$tag){ echo tags_url(\$tag); } echo '",
-			"'.make_date(\$item['date-time'],\$date_format).'",
-			"'.make_date(\$item['date-time'],\"d/m/Y\").'",
-			"'.wordCount(\$item['content']).'",
-			"'.get_short_url(\$item['id']).'",
-			"'.\$item['content'].'",
-			"'.\$item['blurb'].'",
-			"'; \$id = \$item['id']; echo '",
-			"'; if (\$result = return_array(\"SELECT `title`, `url` FROM \$posts WHERE `id` > '\".\$id.\"' AND `status`='publish' ORDER BY `id` ASC LIMIT 1\", false)) {if (\$item = mysql_fetch_array(\$result, MYSQL_ASSOC)) {if(\$item['id'] <> \$id) {if (empty(\$item['title'])) {\$item['title'] = 'Untitled Post';} echo '<a class=\"left\" href=\"'.get_friendly_url(\$item['url']).'\" title=\"'.htmlspecialchars(\$item['title']).'\">&lt; '.myTruncate(\$item['title'],40).'</a>';}} else {echo '<a class=\"left\" href=\"#\">This is the most recent post</a>';}} echo '",
-			"'; if (\$result = return_array(\"SELECT `title`, `url` FROM \$posts WHERE `id` < '\".\$id.\"' AND `status`='publish' ORDER BY `id` DESC LIMIT 1\", false)) {if (\$item = mysql_fetch_array(\$result, MYSQL_ASSOC)) {if(\$item['id'] <> \$id) {if (empty(\$item['title'])) {\$item['title'] = 'Untitled Post';} echo '<a class=\"right\" href=\"'.get_friendly_url(\$item['url']).'\" title=\"'.htmlspecialchars(\$item['title']).'\">'.myTruncate(\$item['title'],40).' &gt;</a>';}}} echo '",
-			"'; if (\$commenting == true) {include(SOFT_NAME.'/controllers/comments.php');} echo '",
-			"<hr /><div id=\"share\"><p>'.wordCount(\$item['content']).' hand-crafted words went into this article, why not share them with a friend?</p><a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"horizontal\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script><div class=\"prevnext\">';\$id = \$item['id'];if (\$result = return_array(\"SELECT `title`, `url` FROM \$posts WHERE `id` < '\".\$id.\"' AND `status`='publish' ORDER BY `id` DESC LIMIT 1\", false)) {if (\$item = mysql_fetch_array(\$result, MYSQL_ASSOC)) {if(\$item['id'] <> \$id) {if (empty(\$item['title'])) {\$item['title'] = 'Untitled Post';} echo '<p class=\"lastPost\"><a href=\"'.get_friendly_url(\$item['url']).'\" title=\"'.htmlspecialchars(\$item['title']).'\">'.myTruncate(\$item['title'],40).'</a>&gt;</p>';}}}if (\$result = return_array(\"SELECT `title`, `url` FROM \$posts WHERE `id` > '\".\$id.\"' AND `status`='publish' ORDER BY `id` ASC LIMIT 1\", false)) {if (\$item = mysql_fetch_array(\$result, MYSQL_ASSOC)) {if(\$item['id'] <> \$id) {if (empty(\$item['title'])) {\$item['title'] = 'Untitled Post';}echo '<p class=\"nextPost\">&lt;<a href=\"'.get_friendly_url(\$item['url']).'\" title=\"'.htmlspecialchars(\$item['title']).'\">'.myTruncate(\$item['title'],40).'</a></p>';}}}echo '</div></div><hr />",
-			"'.\$numInArray.'",
-			"#'.strtoupper(\$tag).'",
-			"'.\$search.'",
-			"'.\$row['name'].'",
-			"'.\$row['content'].'",
-			"'; \$start = (\$page * \$num); if ((\$page-1) > 0) { echo '<a href=\"'.archives_url(\$page-1).'\" title=\"Newer\">Newer</a>'; } echo '",
-			"'; \$start = (\$page * \$num); if (\$result = return_array(\"SELECT * FROM \$posts WHERE status = 'publish' \$order LIMIT \$start, \$num\", false)) {if (\$row = mysql_fetch_array(\$result, MYSQL_ASSOC)) { echo '<a href=\"'.archives_url(\$page+1).'\" title=\"Older\">Older</a>'; }} echo '"
+			URL,
+			THEME_DIR,
+			SITE_NAME,
+			'<link rel="stylesheet" href="'.URL.'square/themes/'.$theme.'/'.'style.css" type="text/css" />',
+			TAGLINE,
+			$page_name,
+			'<link rel="alternate" type="application/rss+xml" title="'.SITE_NAME.'" href="'.URL.'feed/" />'.PHP_EOL.'	<link rel="alternate" type="application/atom+xml" title="'.SITE_NAME.'" href="'.URL.'feed/?atom" />'.$head_list,
+			ucfirst(USERNAME),
+			blog_nav(),
+			about_url(),
+			archives_url(1),
+			user_footer().$plug_list,
+			VERSION,
+			'<a href="http://github.com/tomchatting/SquareCMS/">:-)</a> '.HARD_NAME.' '.VERSION,
+			$numInArray,
+			'#'.strtoupper($tag_name),
+			$search
 		);
-	
+
 		return str_replace($find, $replace, $file);
 	}
 	
@@ -192,7 +277,7 @@
 		$string = substr($string, 0, $limit);
 		if(false !== ($breakpoint = strrpos($string, $break))) {
 		$string = substr($string, 0, $breakpoint);
-	}
+		}
 	
 	return $string . $pad;
 	}
@@ -224,6 +309,7 @@
 		}
 		return $html;
 	}
+	
 	function wordCount($html) {
 		$wc = strip_tags($html);
 		$pattern = "#[^(\w|\d|\'|\"|\.|\!|\?|;|,|\\|\/|\-|:|\&|@)]+#";
@@ -250,4 +336,3 @@
 		$tag = str_replace("<square:","",$tag);
 		$tag = str_replace(" />","",$tag);
 	}
-?>
