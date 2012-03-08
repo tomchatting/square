@@ -10,5 +10,5 @@
 		</div>
 	</div>
 </square:foreach_post>
-<p class="lastPost"><square:next_page /> &gt;</p>
 <p class="nextPost">&lt; <square:prev_page /></p>
+<p class="lastPost"><square:next_page /> &gt;</p>
