@@ -1,6 +1,6 @@
 <?php
 	function print_article($id) {
-		global $posts;
+		global $posts, $page_name, $item, $result;
 	
 		$result = return_array("SELECT * FROM $posts WHERE `id`='$id' LIMIT 1", false);
 		$item = mysql_fetch_array($result, MYSQL_ASSOC);
@@ -34,8 +34,7 @@
 		$commenting = $item['comments'];
 	
 		$page_name = $item['title'];
-		$file = build_page("post");
-		eval("echo '".$file."';");
+		echo build_page("post");
 	}
 
 	if ($input[0] == "s") {
