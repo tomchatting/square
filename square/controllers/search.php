@@ -1,6 +1,6 @@
 <?php
 	function print_search($s) {
-		global $dbsettings, $posts, $order;
+		global $dbsettings, $posts, $order, $numInArray, $blogPost, $search;
 	
 		$search = preg_replace("[^A-Za-z0-9]", " ", $s);
 		$search = trim($search);
@@ -15,7 +15,7 @@
 		
 		$page_name = "Search for ".$search;
 		$file = build_page("search");
-		eval("echo '".$file."';");
+		echo $file;
 	}
 	
 	print_search($_GET["s"]);
