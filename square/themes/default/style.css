@@ -1,12 +1,12 @@
-/*
+﻿/*
 	Name:			Default Theme
 	Author:			Thomas Chatting
-	URL:			http://dg9t.eu/
+	URL:			http://spoolio.co.cc/
 	Version:		3.0.0
 	Description:	The default theme for SquareCMS
 */
 img 							{border: 0;}
-html 							{font: 0.875em Helvetica, Arial, sans-serif; background: #F7F7F7; color: #333; line-height:1.5; margin: 0; padding: 0; width:100%;}
+html 							{font: 0.9em Helvetica, Arial, sans-serif; background: #F7F7F7; color: #333; line-height:1.5; margin: 0; padding: 0; width:100%;}
 body							{margin:0;}
 a								{color: #02478E; text-decoration: none;}
 a:hover							{color: #003366;}

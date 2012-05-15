@@ -1,7 +1,7 @@
 <?php
 	/*
-		The Bespoke Blog Engine - Version 1.1 (Square)
-		Last edited on the 8th March 2012
+		The Bespoke Blog Engine - Version 1.2 (Square)
+		Last edited on the 15th May 2012
 
 		------------------------------------------------------------------
 		This program is free software. It comes without any warranty, to

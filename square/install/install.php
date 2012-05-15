@@ -70,7 +70,7 @@
 
 	define('SOFT_NAME',	'square'); 		/* Folder name in case I change it later */
 	define('HARD_NAME',	'The Bespoke Blog Engine - SquareCMS'); 	/* Application Name */
-	define('VERSION', '1.0.0');
+	define('VERSION', '1.2.0');
 	error_reporting(E_ALL^E_NOTICE^E_WARNING);
 
 	if (isset($_GET['step'])) {$step = $_GET['step'];} else {$step = 1;}
@@ -437,7 +437,7 @@ HTML;
 		} else {
 			if ($tag == 'clean') {
 				$settings = $_POST['st'];
-				if (isset($settings['clean_urls'])) {$clean = true;} else {$clean = false;}
+				if ($settings['clean_urls']) {$clean = true;} else {$clean = false;}
 				$timezone = $settings['timezone'];
 				$tagline = mysql_real_escape_string($settings['tagline']);
 				$site_name = mysql_real_escape_string($settings['site_name']);

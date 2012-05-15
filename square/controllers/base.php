@@ -10,6 +10,9 @@
 		Author: Thomas Chatting
 		Version: 1.0
 		Description: Allows you to call MySQL queries in procedural code, without using a lot of repeating blocks
+		Returns:
+			boolean: false // if failed
+			array: $return
 	*/
 	function return_array($query, $array=true) {
 		global $dbsettings;

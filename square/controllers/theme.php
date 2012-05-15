@@ -113,7 +113,7 @@
 			print_comments(),
 			'<hr /><div id="share"><p>'.wordCount($item['content']).' hand-crafted words went into this article, why not share them with a friend?</p><a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><div class="prevnext">'.next_post($item['id']+1).last_post($item['id']-1).'</div></div><hr />'
 		);
-		if ($_COOKIE[COOKIE_NAME] == COOKIE_VALUE) {$block = str_replace("<square:article_edit_link />", "<a href=\"".URL.SOFT_NAME."/?cmd=edit&id=".$item['id']."\">Edit</a>", $block);} else {$file = str_replace("<square:article_edit_link />", "", $block);}
+		if ($_COOKIE[COOKIE_NAME] == COOKIE_VALUE) {$block = str_replace("<square:article_edit_link />", "<a href=\"".URL.SOFT_NAME."/?cmd=edit&id=".$item['id']."\">Edit</a>", $block);} else {$block = str_replace("<square:article_edit_link />", "", $block);}
 		return str_replace($find, $replace, $block);
 	}
 	
