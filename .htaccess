@@ -10,4 +10,6 @@
 	RewriteRule		^(page)(/.*)?$ 		index.php		[L]
 	RewriteRule		^(p)(/.*)?$ 		index.php		[L]
 	RewriteRule		^(s)(/.*)?$ 		index.php		[L]
+	RewriteRule		^(feed)?$			index.php		[L]
 </IfModule>
+ErrorDocument 404 /404.html

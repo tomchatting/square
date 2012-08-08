@@ -18,6 +18,8 @@
 	if ($input[0] == "") {$input[0] = 'page'; $input[1] = 1;}
 
 	if ($input[0] == "s" || $input[0] == "articles") {require(SOFT_NAME.'/controllers/post.php'); exit();}
+	
+	if ($input[0] == "feed") {require(SOFT_NAME.'/controllers/feed.php'); exit();}
 
 	if ($_GET["cmd"] == "search") {require(SOFT_NAME.'/controllers/search.php'); exit();}
 

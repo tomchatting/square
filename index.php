@@ -1,6 +1,6 @@
 <?php
 	/*
-		The Bespoke Blog Engine - Version 1.2 (Square)
+		The Bespoke Blog Engine - Version 1.2.1 (Square)
 		Last edited on the 15th May 2012
 
 		------------------------------------------------------------------

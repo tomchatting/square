@@ -70,7 +70,7 @@
 
 	define('SOFT_NAME',	'square'); 		/* Folder name in case I change it later */
 	define('HARD_NAME',	'The Bespoke Blog Engine - SquareCMS'); 	/* Application Name */
-	define('VERSION', '1.2.0');
+	define('VERSION', '1.0.0');
 	error_reporting(E_ALL^E_NOTICE^E_WARNING);
 
 	if (isset($_GET['step'])) {$step = $_GET['step'];} else {$step = 1;}
@@ -110,7 +110,7 @@
 				, 2
 			);
 		}
-		if ($str = http_get_file('http://spoolio.po.gs/current.txt')){
+		if ($str = http_get_file('http://dg9t.eu/current.txt')){
 			$onversion = explode('.',$str);
 			$offversion = explode('.',$square_version);
 			if (intval($onversion[1].$onversion[2]) >= intval($offversion[1].$offversion[2])){
@@ -245,7 +245,7 @@ HTML;
 					}
 				}
 				if (!$flag) {
-					$hello_world = "INSERT INTO `".$dbprefix."posts` (`id`, `title`, `url`, `comments`, `content`, `date-time`, `status`, `tags`, `blurb`) VALUES ('1', 'Hello World!', 'hello-world', 'true', '<p>Welcome to your new blog! Feel free to edit this post to make it more of a welcome to your users than to you, then you can add a theme, edit the pages, change the structure of the site; edit away to your hearts content!</p>\r\n<p>Stay up to date with updates at <a href=\"http://spoolio.co.cc/p/square\">http://spoolio.co.cc/</a>. Have fun!</p>', '".gmdate('Y-m-d')." 00:00:00', 'publish', 'hello world, first, quickie', '');";
+					$hello_world = "INSERT INTO `".$dbprefix."posts` (`id`, `title`, `url`, `comments`, `content`, `date-time`, `status`, `tags`, `blurb`) VALUES ('1', 'Hello World!', 'hello-world', 'true', '<p>Welcome to your new blog! Feel free to edit this post to make it more of a welcome to your users than to you, then you can add a theme, edit the pages, change the structure of the site; edit away to your hearts content!</p>\r\n<p>Stay up to date with updates at <a href=\"http://dg9t.eu/\">http://dg9t.eu/</a>. Have fun!</p>', '".gmdate('Y-m-d')." 00:00:00', 'publish', 'hello world, first, quickie', '');";
 					if (!mysql_query($hello_world)) {
 						$flag = true;
 						$results[] = array(
