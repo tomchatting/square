@@ -15,7 +15,7 @@
 	$order = 'ORDER BY `date-time` DESC, ID DESC';
 
 	$result = return_array("SELECT * FROM $settings", false);
-	while($row = mysql_fetch_array($result)){
+	while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 		$setting[$row['name']] = $row['value'];
 	}
 
@@ -27,14 +27,6 @@
 	$date_format 	= $setting['date_format'];
 	$timezone	 	= $setting['timezone'];		// The UCT Offset
 	$uct_offset		= (($timezone) * 60 * 60);
-
-
-	// COMMENTING
-	if ($setting['commenting_enabled'] == "true"){define('COMMENTING_ENABLED', true);}else{define('COMMENTING_ENABLED', false);}
-	if (COMMENTING_ENABLED == true) {
-		define('COMMENT_SYSTEM', $setting['comment_system']); // Disqus or Intense Debate
-		define('COMMENT_UNIQUE_ID', $setting['comment_unique_id']);
-	}
 
 	// THEME SETTINGS
 	$theme 				= $setting['theme'];
@@ -58,7 +50,7 @@
 	define('COOKIE_SALT',	'BB3154R4TH3RG00DBL0G3NG1N3');
 	
 	// NOMOMOM - COOKIES
-	define('COOKIE_NAME', 	'square_auth');
+	define('COOKIE_NAME', 	SOFT_NAME.'_auth');
 	define('COOKIE_VALUE', 	md5(USERNAME.PASSWORD.COOKIE_SALT));
 	define('COOKIE_DOMAIN',	'.'.DOMAIN);
 	define('NOW',			time());

@@ -46,7 +46,6 @@
 		<li class="hub"><a href="./?cmd=settings">Hub</a></li>
 		<li class="config"><a href="./?cmd=config">Config</a></li>
 		<li class="port"><a href="./?cmd=port">Import/Export</a></li>
-		<li class="plugins"><a href="./?cmd=plugins">Plugins</a></li>
 		<li class="themes"><a href="./?cmd=themes">Themes</a></li>
 	</ul>
 	<?php } ?>

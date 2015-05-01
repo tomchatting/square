@@ -5,9 +5,6 @@
 			<span class="date"><a href="<square:article_permalink />"><square:article_date /></a> &ndash; </span>
 			<span class="tags"><square:article_tags /></span>
 		</p>
-		<div class="main">
-			<square:article_content />
-		</div>
 	</div>
 </square:foreach_post>
 <p class="nextPost">&lt; <square:prev_page /></p>

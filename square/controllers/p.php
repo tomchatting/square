@@ -6,7 +6,7 @@
 	function print_page($id) {
 		global $pages, $content;
 		$result = return_array("SELECT * FROM $pages WHERE id='$id' LIMIT 1", false);
-		$row = mysql_fetch_array($result, MYSQL_ASSOC);
+		$row = $result->fetch(PDO::FETCH_ASSOC);
 	
 		if (empty($row)) {
 			header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found"); // Return a 404
@@ -39,7 +39,7 @@
 	} else {
 		$wanted = $input[1];
 		$query = return_array("SELECT id, name FROM $pages WHERE url like '%$wanted%' LIMIT 1", false);
-		$p = mysql_fetch_array($query, MYSQL_ASSOC);
+		$p = $result->fetch(PDO::FETCH_ASSOC);
 		$page_name = $p['name'];
 		print_page($p['id']);
 		exit();

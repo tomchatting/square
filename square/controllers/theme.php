@@ -38,8 +38,6 @@
 		$file = str_replace($find, $replace, $file);
 		if ($item) {$file = build_post($item, $file);}
 
-		//$file = replace_code_page($file);
-
 		return $file;
 	}
 	
@@ -65,7 +63,7 @@
 	}
 	
 	function foreach_post($repeating, $res) {
-		while($item = mysql_fetch_array($res, MYSQL_ASSOC)) {
+		while($item = $res->fetch(PDO::FETCH_ASSOC)) {
 			$id = $item['id'];
 			$block .= build_post($item, $repeating);
 		}
@@ -86,9 +84,7 @@
 			'article_blurb',
 			'article_pagination',
 			'article_next',
-			'article_prev',
-			'article_comments',
-			'article_share'
+			'article_prev'
 		);
 
 
@@ -109,9 +105,7 @@
 			$item['blurb'],
 			'',
 			next_post($item['id']),
-			last_post($item['id']),
-			print_comments(),
-			'<hr /><div id="share"><p>'.wordCount($item['content']).' hand-crafted words went into this article, why not share them with a friend?</p><a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script><div class="prevnext">'.next_post($item['id']+1).last_post($item['id']-1).'</div></div><hr />'
+			last_post($item['id'])
 		);
 		if ($_COOKIE[COOKIE_NAME] == COOKIE_VALUE) {$block = str_replace("<square:article_edit_link />", "<a href=\"".URL.SOFT_NAME."/?cmd=edit&id=".$item['id']."\">Edit</a>", $block);} else {$block = str_replace("<square:article_edit_link />", "", $block);}
 		return str_replace($find, $replace, $block);
@@ -128,7 +122,7 @@
 		$start = ($page * $num);
 		
 		if ($res = return_array("SELECT * FROM $posts WHERE `status`='publish' $order LIMIT $start, $num", false)) {
-			if ($row = mysql_fetch_array($res, MYSQL_ASSOC)) { 
+			if ($row = $res->fetch(PDO::FETCH_ASSOC)) { 
 				return '<a href="'.archives_url($page+1).'" title="Older">Older</a>'; 
 			}
 		}
@@ -145,7 +139,7 @@
 	function next_post($ids) {
 		global $posts;
 		$next_post = return_array("SELECT `title`, `url`, `status` FROM $posts WHERE `id`='$ids' LIMIT 1", false);
-		if ($token = mysql_fetch_array($next_post, MYSQL_ASSOC)) {
+		if ($token = $next_post->fetch(PDO::FETCH_ASSOC)) {
 			if ($token['status'] == 'publish') {
 				if (empty($token['title'])) {
 					$token['title'] = 'Untitled Post';
@@ -160,7 +154,7 @@
 	function last_post($ids) {
 		global $posts, $order;
 		if ($prev_post = return_array("SELECT `title`, `url`, `status` FROM $posts WHERE `id`='$ids'", false)) {
-			if ($token = mysql_fetch_array($prev_post, MYSQL_ASSOC)) {
+			if ($token = $prev_post->fetch(PDO::FETCH_ASSOC)) {
 				if ($token['status'] == 'publish') {
 					if($token['id'] <> $id) {
 						if (empty($token['title'])) {
@@ -247,7 +241,7 @@
 	function user_footer() {
 		global $pages;
 		if ($query = return_array("SELECT * FROM $pages WHERE `url`='footer' and `type`='stub' LIMIT 1", false)) {
-			if ($result = mysql_fetch_array($query, MYSQL_ASSOC)) {
+			if ($result = $query->fetch(PDO::FETCH_ASSOC)) {
 				return $result['content'];
 			}
 		}
@@ -262,7 +256,7 @@
 			$nav = $nav.PHP_EOL.'<li title="Admin"><a href="'.URL.SOFT_NAME.'">Admin</a></li>';
 		}
 		$query = return_array("SELECT * FROM $pages WHERE `type` <> 'stub' ORDER BY `name` ASC", false);
-		while($row = mysql_fetch_array($query, MYSQL_ASSOC)) {
+		while($row = $query->fetch(PDO::FETCH_ASSOC)) {
 			$nav = $nav.PHP_EOL.'<li title="'.$row['name'].'"><a href="'.page_url($row['url']).'">'.$row['name'].'</a></li>';
 		}
 		$nav = $nav.PHP_EOL.'</ul>';

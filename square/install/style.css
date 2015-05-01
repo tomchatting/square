@@ -8,7 +8,7 @@ span.cannot {color: #C02B18;}
 .checkbox {width: 15px;}
 .right {float: right;}
 .fail {color: #C02B18; font-weight: bold;}
-form#database p {width: 250px; margin: 0 auto; clear: both; padding-buttom: 5px;}
+form#database p {width: 250px; margin: 0 auto; clear: both; padding-bottom: 5px;}
 form#database label {float: left;}
 form#database input, form#database select {float: right;}
 ul.test {list-style:none; margin:0; padding: 0;}

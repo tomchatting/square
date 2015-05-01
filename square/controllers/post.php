@@ -3,7 +3,7 @@
 		global $posts, $page_name, $item, $result;
 	
 		$result = return_array("SELECT * FROM $posts WHERE `id`='$id' LIMIT 1", false);
-		$item = mysql_fetch_array($result, MYSQL_ASSOC);
+		$item = $result->fetch(PDO::FETCH_ASSOC);
 		$id = $item['id'];
 	
 		if (empty($item)) {
@@ -42,7 +42,7 @@
 			$wanted = base58_decode($input[1]);
 				if ($result = return_array("SELECT * FROM $posts WHERE id=$wanted LIMIT 1", false))
 				{
-					if ($row = mysql_fetch_array($result, MYSQL_ASSOC))
+					if ($row = $result->fetch(PDO::FETCH_ASSOC))
 					{
 						header("Location: ".get_friendly_url($row['url']));
 						exit();
@@ -65,7 +65,7 @@
 		}
 	
 		$query = return_array("SELECT * FROM $posts WHERE `url` = '".$friendly_title."' LIMIT 1", false);
-		$post = mysql_fetch_array($query, MYSQL_ASSOC);
+		$post = $query->fetch(PDO::FETCH_ASSOC);
 	
 		$id = $post['id']; // Return the ID for post.php to parse and use
 		print_article($id);

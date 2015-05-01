@@ -110,26 +110,6 @@
 				, 2
 			);
 		}
-		if ($str = http_get_file('http://dg9t.eu/current.txt')){
-			$onversion = explode('.',$str);
-			$offversion = explode('.',$square_version);
-			if (intval($onversion[1].$onversion[2]) >= intval($offversion[1].$offversion[2])){
-				$results[] = array(
-					'This is the most recent version of the software',
-					1
-				);
-			} else {
-				$results[] = array(
-					'This is not the latest version of the software, please download the most current version at '.URL,
-					2
-				);
-			}
-		} else {
-			$results[] = array(
-				'Could not determine if this is the latest version of the software',
-				2
-			);
-		}
 		$footer = '<p>So far, so good, let\'s <a href="./?step=2">continue on.</a></p>';
 	}
 
