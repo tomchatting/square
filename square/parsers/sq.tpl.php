@@ -11,13 +11,13 @@
 
       switch($page) {
         case 'article':
-          $liquid = new LiquidTemplate('./square/themes/default/');
-          $liquid->parse(file_get_contents('./square/themes/default/post.tpl'));
+          $liquid = new LiquidTemplate('./square/templates/default/');
+          $liquid->parse(file_get_contents('./square/templates/default/post.tpl'));
           print $liquid->render($assigns);
           break;
         default:
-          $liquid = new LiquidTemplate('./square/themes/default/');
-          $liquid->parse(file_get_contents('./square/themes/default/index.tpl'));
+          $liquid = new LiquidTemplate('./square/templates/default/');
+          $liquid->parse(file_get_contents('./square/templates/default/index.tpl'));
           print $liquid->render($assigns);
       }
 

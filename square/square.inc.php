@@ -42,7 +42,7 @@ Class Square {
 
     # make these cases instead of ifs
 
-    if ($input[0] == "") {$input[0] = 'page'; $input[1] = 1;}
+    if (!$input[0] && !$input[1]) {$input[0] = 'page'; $input[1] = 1;}
 
     try {
       # create and render the current page

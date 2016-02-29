@@ -224,7 +224,8 @@ class Liquid
             'LiquidStandardFilters' => '/lib/LiquidStandardFilters.class.php',
             'LiquidTag' => '/lib/LiquidTag.class.php',
             'LiquidTemplate' => '/lib/LiquidTemplate.class.php',
-            'LiquidVariable' => '/lib/LiquidVariable.class.php'
+            'LiquidVariable' => '/lib/LiquidVariable.class.php',
+            'LiquidTagPaginate' => '/lib/Tag/LiquidTagPaginate.class.php',
     );
 }
 

@@ -6,7 +6,8 @@
 if(phpversion() < 5.3) {
   die('<h3>this app requires php 5.3 or higher.<br>you are running on php '.phpversion().'. go figure.');
 } else {
-
+  
+  error_reporting(E_ALL^E_NOTICE);
   # require config
   require_once './square/config.php';
   # require helpers

@@ -4,20 +4,18 @@ Class Pages {
 
   static function page($request = 1) {
 
-    function get_archives($page = 1, $num = 6, $page_title = "Archives") {
-
-      $start = (($page - 1) * $num); // Default to 0
+    function get_archives($page_title = "Archives") {
 
       // Pull the results from post in blog order, limited to 6 (or "n") from the start value
 
       $DateNow = gmdate("Y-m-d H:i:s");
 
-      return Database::return_array("SELECT * FROM `square_posts` WHERE `date` <= '$DateNow' AND `status` = 'publish' ORDER BY `date` DESC, `id` DESC LIMIT $start, $num", true);
+      return Database::return_array("SELECT * FROM `square_posts` WHERE `date` <= '$DateNow' AND `status` = 'publish' ORDER BY `date` DESC, `id` DESC", true);
 
     }
 
     if ($request == 1) {$name = "Home";} else {$name = "Archives";}
-    $result = get_archives($request,6,$name);
+    $result = get_archives($name);
 
     $assigns = array(
     'site' => Square::$site,
@@ -46,7 +44,7 @@ Class Pages {
     }
 
     $result = get_article($request);
-    
+
     $assigns = array(
     'site' => Square::$site,
     'page' => array(
@@ -57,6 +55,10 @@ Class Pages {
 
     Template::parse($assigns, 'article');
 
+  }
+
+  static function admin($request) {
+    echo "admin shit will go here";
   }
 
 }
