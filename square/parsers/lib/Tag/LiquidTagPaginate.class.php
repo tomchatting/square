@@ -139,6 +139,6 @@ class LiquidTagPaginate extends LiquidBlock
 		$full_url = $scheme . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 		$parsed_url = parse_url($full_url);
 		$current_url = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'];
-	    return Square::$site['url'];
+	  return Square::$site['url'];
     }
 }

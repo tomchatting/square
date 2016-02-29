@@ -5,7 +5,7 @@
 <article>
 
   <h1 class="article-title" title="{{ post.date }}">
-    <a href="articles/{{ post.url }}">{{ post.title }}</a>
+    <a href="{{ site.url }}articles/{{ post.url }}">{{ post.title }}</a>
   </h1>
 
   <date>{{ post.date | date: "%d %B, %Y" }}</date>
