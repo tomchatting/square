@@ -5,7 +5,7 @@ Class Square {
   static $version = '2.0';
 
   static $site    = array(
-    'title' => 'Blog'
+    'title' => 'Blog',
   );
 
   function create_page($file_path) {
@@ -16,7 +16,7 @@ Class Square {
     if(method_exists('Pages', $path)) {
       Pages::$path($request);
     } else {
-      throw new Exception('404');
+      Pages::p($path);
     }
 
   }
@@ -36,13 +36,14 @@ Class Square {
 
     $domain = preg_replace('#^www\.#', '', $_SERVER['SERVER_NAME']);
     self::$site['title'] = $setting['site_name'];
+    self::$site['headline'] = $setting['tagline'];
     self::$site['url'] = str_replace('index.php', '', 'http://'.$domain.$_SERVER['PHP_SELF']);
 
     $input = Helpers::get_url_input();
 
     # make these cases instead of ifs
 
-    if (!$input[0] && !$input[1]) {$input[0] = 'page'; $input[1] = 1;}
+    if (!$input[0]) {$input[0] = 'page'; $input[1] = 1;}
 
     try {
       # create and render the current page

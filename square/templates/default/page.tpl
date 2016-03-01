@@ -1,18 +1,18 @@
 {% include 'default' %}
-{% if post %}
-<article class="post">
+{% if page %}
+<article>
 
-  <h1 class="post-title">
-    <a href="{{ site.url }}articles/{{ post.url }}">{{ post.title }}</a>
+  <h1 class="article-title">
+    <a href="{{ site.url }}{{ page.url }}">{{ page.title }}</a>
   </h1>
 
   <time datetime="{{ post.date  }}" class="post-date">{{ post.date | date: "%d %B, %Y" }}</time>
 
   <div class=content>
-    {{ post.content }}
+    {{ page.content }}
   </div>
 
 </article>
 {% else %}
-No posts!
+404
 {% endif %}

@@ -9,14 +9,18 @@
 
     static function parse($assigns, $page = 'page') {
 
+      $liquid = new LiquidTemplate('./square/templates/default/');
+
       switch($page) {
         case 'article':
-          $liquid = new LiquidTemplate('./square/templates/default/');
           $liquid->parse(file_get_contents('./square/templates/default/post.tpl'));
           print $liquid->render($assigns);
           break;
+        case 'p':
+          $liquid->parse(file_get_contents('./square/templates/default/page.tpl'));
+          print $liquid->render($assigns);
+          break;
         default:
-          $liquid = new LiquidTemplate('./square/templates/default/');
           $liquid->parse(file_get_contents('./square/templates/default/index.tpl'));
           print $liquid->render($assigns);
       }

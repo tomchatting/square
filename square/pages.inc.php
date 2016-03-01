@@ -10,7 +10,7 @@ Class Pages {
 
       $DateNow = gmdate("Y-m-d H:i:s");
 
-      return Database::return_array("SELECT * FROM `square_posts` WHERE `date` <= '$DateNow' AND `status` = 'publish' ORDER BY `date` DESC, `id` DESC", true);
+      return Database::return_array("SELECT * FROM `square_posts` WHERE `date` <= '$DateNow' AND `status` = 'publish' AND `type` = 'article' ORDER BY `date` DESC, `id` DESC", true);
 
     }
 
@@ -58,7 +58,22 @@ Class Pages {
   }
 
   static function admin($request) {
-    echo "admin shit will go here";
+    echo "<h1>bae caught me adminin'</h1>";
+    new Admin($_GET);
+  }
+
+  static function p($request) {
+
+    $p = Database::return_array("SELECT * FROM `square_posts` WHERE `type` = 'page' AND `title` LIKE '$request' LIMIT 1", false);
+
+    $assigns = array(
+    'site' => Square::$site,
+    'page' => $p
+    );
+
+    Template::parse($assigns, 'p');
+
+    /* throw new Exception('404'); */
   }
 
 }
