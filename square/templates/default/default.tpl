@@ -10,6 +10,6 @@
 <header class="masthead">
   <h3 class="masthead-title">
     <a href="{{ site.url }}">{{ site.title }}</a>
-    <small>{{ site.headline }}</small>
+    <small>{{ site.headline }} | {% for li in nav %}<a href="{{ site.url }}{{ li.url }}">{{ li.title }}</a>{% endfor %}</small>
   </h3>
 </header>

@@ -15,6 +15,12 @@ Class Helpers {
     return is_array($files) ? $files : array();
   }
 
+  static function construct_nav() {
+
+    return Database::return_array("SELECT `title`,`url` from `square_posts` WHERE `type`='page'", true);
+
+  }
+
   /*
     Function Name: get_url_input()
     Author: Thomas Chatting

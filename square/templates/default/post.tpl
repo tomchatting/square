@@ -16,3 +16,4 @@
 {% else %}
 No posts!
 {% endif %}
+{% include 'footer' %}
