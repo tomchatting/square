@@ -1,5 +1,5 @@
 <div class="container">
-	<h1><?php if(isset($post)) { echo 'Edit'; } else { echo 'New';} ?> Post</h1>
+	<h1><?php if(isset($post)) { echo 'Edit'; $command = 'edit'; } else { echo 'New'; $command = 'new'; } ?> Post</h1>
 	<div>
 		<div class='message'>
 			<strong>HTML Guide</strong>
@@ -10,6 +10,7 @@
 			<p><code>&lt;img src="/img/img.png" alt="An Image"&gt;</code></p>
 		</div>
 		<form action="" method="post">
+				<?php if($command == 'edit'){ echo '<input type="text" name="id" value="'.$post['id'].'">'; } ?>
 				<p><label>Title:</label><br><input type="text" name="title" class="title" tabindex=1 <?php echo 'value="'. htmlspecialchars($post['title']) .'"'; ?>></p>
 				<p><label>Date <code>(YYYY-MM-DD HH:MM)</code>:</label> <input type="text" name="date" tabindex=2 value="<?php if(isset($post['date'])){ echo $post['date']; } else { echo date('Y-m-d G:i:s'); } ?>" /></p>
 				<p><label>Type:</label> <select name="type" tabindex=3><option value="article">Article</option><option value="page" <?php if($post['type']=='page'){ echo 'selected'; } ?>>Page</option></select></p>
@@ -30,8 +31,8 @@
         <label>Category 2:</label> <select name="category2" tabindex=6><option value="0"></option><?php echo $select2; ?></select></p>
 				<p><label>URL <code>(if left blank will auto generate)</code>:</label> <input type="text" name="url" tabindex=7 value="<?php echo $post['url']; ?>" /></p>
 				<p><label>Status:</label> <select name="status" tabindex=8><option value="draft">Draft</option><option value="publish" <?php if($post['status']=='publish'){ echo 'selected'; } ?>>Publish</option></select></p>
-				<button name="submit" type="submit" value="com" class="commit" tabindex=9>Commit</button>
+				<button name="<?php echo $command; ?>" type="submit" value="com" class="commit" tabindex=9>Commit</button>
 		</form>
 	</div>
-	<footer><small>sc v <?php echo Square::$version.filemtime('index.php'); ?></small></footer>
+	<footer><small>sc v <?php echo Square::$version; ?></small></footer>
 </div>

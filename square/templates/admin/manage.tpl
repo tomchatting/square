@@ -41,5 +41,5 @@
 
   </form>
 
-<footer><small>sc v <?php echo Square::$version.filemtime('index.php'); ?></small></footer>
+<footer><small>sc v <?php echo Square::$version; ?></small></footer>
 </div>

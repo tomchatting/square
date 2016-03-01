@@ -16,5 +16,5 @@
 		<button name="login" type="submit" value="Login" class="commit">Login</button>
 	</form>
 
-	<footer><small>sc v <?php echo Square::$version.filemtime('index.php'); ?></small></footer>
+	<footer><small>sc v <?php echo Square::$version; ?></small></footer>
 </div>

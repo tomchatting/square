@@ -71,19 +71,105 @@
           include('./square/templates/admin/manage.tpl');
           break;
         case 'edit':
+          if(isset($_POST['edit'])) {
+            $dbh = Database::database_connect(Config::$db_settings['host'], Config::$db_settings['database'], Config::$db_settings['username'], Config::$db_settings['password']);
+
+            $stmnt = $dbh->prepare('UPDATE square_posts
+              SET
+                `title` = :post_title,
+                `url` = :post_url,
+                `type` = :post_type,
+                `category1` = :post_categoryo,
+                `category2` = :post_categoryt,
+                `content` = :post_content,
+                `date` = :post_date,
+                `status` = :post_status
+              WHERE `id`=:post_id
+              ');
+
+            $stmnt->bindParam(':post_title', $_POST['title']);
+            $stmnt->bindParam(':post_url', $_POST['url']);
+            $stmnt->bindParam(':post_type', $_POST['type']);
+            $stmnt->bindParam(':post_categoryo', $_POST['category1']);
+            $stmnt->bindParam(':post_categoryt', $_POST['category2']);
+            $stmnt->bindParam(':post_content', $_POST['content']);
+            $stmnt->bindParam(':post_date', $_POST['date']);
+            $stmnt->bindParam(':post_status', $_POST['status']);
+            $stmnt->bindParam(':post_id', $_POST['id']);
+
+            $stmnt->execute();
+
+            echo('<div class="container message">Post <code>'.$_POST['title'].'</code> updated. </div>');
+
+          }
           $post = Database::return_array('SELECT * from `square_posts` WHERE `id`='.intval($_GET['id']).' LIMIT 1', false);
           include('./square/templates/admin/post.tpl');
           break;
         case 'categories':
+          if(isset($_POST['submit'])) {
+            if($_POST['name'] == '') {
+
+              echo('<div class="message container">Category <code>name</code> cannot be null.</div>');
+
+            } else {
+
+            $dbh = Database::database_connect(Config::$db_settings['host'], Config::$db_settings['database'], Config::$db_settings['username'], Config::$db_settings['password']);
+
+            $stmnt = $dbh->prepare('INSERT INTO `square_categories` SET `name` = :category_name');
+            $stmnt->bindParam(':category_name', $_POST['name']);
+
+            $stmnt->execute();
+
+            }
+          }
+          if(isset($_GET['delete'])) {
+
+            $dbh = Database::database_connect(Config::$db_settings['host'], Config::$db_settings['database'], Config::$db_settings['username'], Config::$db_settings['password']);
+
+            $stmnt = $dbh->prepare('DELETE FROM `square_categories` WHERE `id` = :category_id');
+            $stmnt->bindParam(':category_id', $_GET['delete']);
+
+            $stmnt->execute();
+
+            echo('<div class="message container">Deleted category <code>'.$_GET['delete'].'</code>.</div>');
+
+          }
           $result = Database::return_array('SELECT * from `square_categories`',true);
           include('./square/templates/admin/categories.tpl');
           break;
         default:
-          if (!isset($_POST["submit"])) {
-            include('./square/templates/admin/post.tpl');
-          } else {
-            echo '<p>you tried to submit a new post</p>';
+          if(isset($_POST['new'])) {
+
+            $dbh = Database::database_connect(Config::$db_settings['host'], Config::$db_settings['database'], Config::$db_settings['username'], Config::$db_settings['password']);
+
+            $stmnt = $dbh->prepare('INSERT INTO square_posts
+              SET
+                `title` = :post_title,
+                `url` = :post_url,
+                `type` = :post_type,
+                `category1` = :post_categoryo,
+                `category2` = :post_categoryt,
+                `content` = :post_content,
+                `date` = :post_date,
+                `status` = :post_status
+              ');
+
+            $stmnt->bindParam(':post_title', $_POST['title']);
+            $stmnt->bindParam(':post_url', $_POST['url']);
+            $stmnt->bindParam(':post_type', $_POST['type']);
+            $stmnt->bindParam(':post_categoryo', $_POST['category1']);
+            $stmnt->bindParam(':post_categoryt', $_POST['category2']);
+            $stmnt->bindParam(':post_content', $_POST['content']);
+            $stmnt->bindParam(':post_date', $_POST['date']);
+            $stmnt->bindParam(':post_status', $_POST['status']);
+
+            $stmnt->execute();
+
+            echo('<div class="container message">Post <code>'.$_POST['title'].'</code> commited. </div>');
+
           }
+
+          include('./square/templates/admin/post.tpl');
       }
 
     }
