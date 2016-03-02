@@ -20,6 +20,10 @@
           $liquid->parse(file_get_contents('./square/templates/default/page.tpl'));
           print $liquid->render($assigns);
           break;
+        case 'categories':
+          $liquid->parse(file_get_contents('./square/templates/default/categories.tpl'));
+          print $liquid->render($assigns);
+          break;
         default:
           $liquid->parse(file_get_contents('./square/templates/default/index.tpl'));
           print $liquid->render($assigns);

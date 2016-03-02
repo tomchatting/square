@@ -68,7 +68,7 @@ Class Pages {
 
     $nav = Helpers::construct_nav();
 
-    $p = Database::return_array("SELECT * FROM `square_posts` WHERE `type` = 'page' AND `title` LIKE '$request' LIMIT 1", false);
+    $p = Database::return_array("SELECT * FROM `square_posts` WHERE `type` = 'page' AND `url` = '$request' LIMIT 1", false);
 
     $assigns = array(
     'site' => Square::$site,
@@ -80,8 +80,41 @@ Class Pages {
 
   }
 
+  static function categories($request) {
+
+    $nav = Helpers::construct_nav();
+
+    $p = Database::return_array("SELECT * from square_categories", true);
+
+    $assigns = array(
+      'site' => Square::$site,
+      'nav' => $nav,
+      'page' => array(
+        'title' => $request
+      ),
+      'categories' => $p
+    );
+
+
+    if($request) {
+
+      $q = Database::return_array("
+        SELECT * FROM square_posts
+          LEFT JOIN square_categories
+            ON square_categories.id = square_posts.category1
+          OR square_categories.id = square_posts.category2
+            WHERE square_categories.name LIKE '$request' ORDER BY `date` DESC", true);
+
+    $assigns['category'] = $q;
+
+    }
+
+    Template::parse($assigns, 'categories');
+
+  }
+
   static function admin($request) {
-    
+
     new Admin($_GET);
 
   }

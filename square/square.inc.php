@@ -22,12 +22,18 @@ Class Square {
 
   }
 
+  function php_fixes() {
+    # in PHP/5.3.0 they added a requisite for setting a default timezone, this should be handled via the php.ini, but as we cannot rely on this, we have to set a default timezone ourselves
+    if(function_exists('date_default_timezone_set')) date_default_timezone_set('Europe/London');
+  }
+
   function __construct($get) {
+
+    $this->php_fixes();
 
     # some database settings
     $db_posts 		= Config::$db_prefix.'posts';
     $db_trash 		= Config::$db_prefix.'posts_trash';
-    $db_pages 		= Config::$db_prefix.'pages';
     $db_settings  = Config::$db_prefix.'settings';
 
     $result = Database::sql_command("SELECT * FROM $db_settings");
