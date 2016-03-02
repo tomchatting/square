@@ -33,7 +33,8 @@ This is all coming, plus thanks to the OOP nature of my new beast, I'm hoping pl
 
 ### square/config.php
 
-`<?php
+```
+<?php
 
 class Config {
 
@@ -50,11 +51,12 @@ class Config {
 }
 
 ?>
-`
+```
 
 ### sql_command
 
-``SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+```
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -93,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `square_settings` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-``
+```
 
 ## [demo](http://square-shiftysu.rhcloud.com)
 
