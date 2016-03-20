@@ -1,9 +1,9 @@
-# SquareCMS
+# square
 > like removing the tatty old table cloth and trying to put a new fucking table under it
 
 Welcome back, it's been a while.
 
-## wtf is a squarecms
+## wtf is a square
 SquareCMS was an attempt at a PHP Content Management System I hacked away about ten years ago. After about three years of neglect I hacked PDO onto it late last year but other than that I left it to rot in favour of using Jekyll and GitHub pages.
 
 ## why come back?
@@ -96,6 +96,20 @@ CREATE TABLE IF NOT EXISTS `square_settings` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 ```
+
+### square_settings
+
+Next, go into `square_settings` and add the following rows:
+
+| name | value |
+| --- | --- |
+| `username` | your username |
+| `password` | `hash('sha256', passw0rd.salt)` |
+| `site_name` | your site's title |
+| `tagline` | a headline for the site |
+| `template` | `default`* |
+
+* Currently unused (along with some others), functionality will come back 'soon'.
 
 ## [demo](http://square-shiftysu.rhcloud.com)
 
