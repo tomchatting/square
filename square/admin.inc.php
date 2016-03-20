@@ -15,7 +15,7 @@
 
       // NOMOMOM - COOKIES
       define('COOKIE_NAME', 	'square_auth');
-      define('COOKIE_VALUE', 	md5($setting['username'].$setting['password'].COOKIE_SALT));
+      define('COOKIE_VALUE', 	hash('sha256', $setting['username'].$setting['password']));
       define('COOKIE_DOMAIN',	'.'.$domain);
       define('NOW',			time());
       define('WEEK',			(24 * 60 * 60) * 7 );
@@ -35,7 +35,7 @@
       </style>';
 
       if (isset($_POST['username'])) {
-  			if (md5($_POST['username'].md5($_POST['password']).COOKIE_SALT) == COOKIE_VALUE) {
+  			if (hash('sha256', $_POST['username'].hash('sha256', $_POST['password'].COOKIE_SALT)) == COOKIE_VALUE) {
   				setcookie(COOKIE_NAME, COOKIE_VALUE, NOW + WEEK, '/', COOKIE_DOMAIN);
   				$_COOKIE[COOKIE_NAME] = COOKIE_VALUE;
   			} else {
