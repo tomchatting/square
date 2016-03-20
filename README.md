@@ -21,10 +21,15 @@ From a database perspective, very little; I'm quite happy with the setup I chose
 ## okay, so what's not done?
 As a rough guideline, the following is missing:
 
-* an admin (though that's next on my list--the dream is to have a procedurally generated new/edit page, so you can add/remove tags to pages as easy as pie) -- *WIP!*
-* ~~page support~~ done!
-* ~~tag support (should I keep this? I'm thinking maybe I should rename it categories and add a new table to the database for hard linking)~~ categories added (textpattern style rather than wordpress style)
-* searching
+- [x] admin-- this one is a partial, some stuff is still WIP
+  - [ ] fix urls (at the moment the user has to create their own urls for posts/pages)
+  - [ ] fix settings pages
+  - [ ] remove hard coding from timezones
+- [x] page support
+- [x] tag support--I've gone with the categories idea
+- [ ] searching
+- [ ] rss/atom
+- [ ] add [parsedown](http://parsedown.org) support
 
 This is all coming, plus thanks to the OOP nature of my new beast, I'm hoping plugins and extensions will become super easy to add, fulfilling a 5 year old promise to myself to actually add it.
 
@@ -109,7 +114,7 @@ Next, go into `square_settings` and add the following rows:
 | `tagline` | a headline for the site |
 | `template` | `default`* |
 
-* Currently unused (along with some others), functionality will come back 'soon'.
+\* Currently unused (along with some others), functionality will come back 'soon'.
 
 ## [demo](http://square-shiftysu.rhcloud.com)
 

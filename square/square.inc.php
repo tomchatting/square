@@ -2,11 +2,11 @@
 
 Class Square {
 
-  static $version = '2.0.fb8fc91';
+  static $version = '2.0-alpha';
 
   static $site    = array(
     'title' => 'Blog',
-    'version' => '2.0.fb8fc91'
+    'version' => '2.0-alpha'
   );
 
   function create_page($file_path) {
