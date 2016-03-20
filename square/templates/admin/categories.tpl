@@ -1,6 +1,8 @@
 <div class="container">
 <h1>Manage Categories</h1>
-
+  <?php
+  if($result) {
+  ?>
   <table id="manage-posts">
     <tr>
       <th class="id">ID</th>
@@ -20,6 +22,9 @@
     }
     ?>
   </table>
+  <?php
+  }
+  ?>
 
   <form action=?cmd=categories method=post>
 

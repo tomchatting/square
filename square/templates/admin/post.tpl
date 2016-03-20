@@ -18,6 +18,7 @@
 				<!-- Generate category boxes -->
 				<?php
 					$categories = Database::return_array('SELECT * from `square_categories`', true);
+					if($categories) {
 					foreach ($categories as $cat) {
 						if($post['category1'] == $cat['id']){$selected = 'selected';}
 						$select1 .= '<option value="'.$cat['id'].'"'.$selected.'>'.$cat['name'].'</option>';
@@ -25,6 +26,7 @@
 						if($post['category2'] == $cat['id']){$selected = 'selected';}
 						$select2 .= '<option value="'.$cat['id'].'"'.$selected.'>'.$cat['name'].'</option>';
 						$selected = '';
+					}
 					}
 				?>
 				<p><label>Category 1:</label> <select name="category1" tabindex=5><option value="0"></option><?php echo $select1; ?></select>
