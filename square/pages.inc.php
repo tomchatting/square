@@ -8,7 +8,7 @@ Class Pages {
 
     function get_archives($page_title = "Archives") {
 
-      // Pull the results from post in blog order, limited to 6 (or "n") from the start value
+      # Pull the results from post in blog order, limited to 6 (or "n") from the start value
 
       $DateNow = gmdate("Y-m-d H:i:s");
 

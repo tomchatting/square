@@ -1,20 +1,12 @@
-<div class="container">
+<div class=container>
 	<h1><?php if(isset($post)) { echo 'Edit'; $command = 'edit'; } else { echo 'New'; $command = 'new'; } ?> Post</h1>
 	<div>
-		<form action="" method="post">
-				<?php if($command == 'edit'){ echo '<input name="id" type="hidden" value="'.$post['id'].'">'; } ?>
-				<p><label>Title:</label><br><input type="text" name="title" class="title" tabindex=1 <?php echo 'value="'. htmlspecialchars($post['title']) .'"'; ?>></p>
-				<p><label>Date <code>(YYYY-MM-DD HH:MM)</code>:</label> <input type="text" name="date" tabindex=2 value="<?php if(isset($post['date'])){ echo $post['date']; } else { echo date('Y-m-d G:i:s'); } ?>" /></p>
-				<p><label>Type:</label> <select name="type" tabindex=3><option value="article">Article</option><option value="page" <?php if($post['type']=='page'){ echo 'selected'; } ?>>Page</option></select></p>
-				<div class='message'>
-					<strong>HTML Guide</strong>
-					<p>Even idiots like me can write HTML!</p>
-					<p><code>&lt;h1&gt;Header Level 1&lt;/h1&gt;</code></p>
-					<p><code>&lt;b&gt;<b>Emphasis</b>&lt;/b&gt;</code></p>
-					<p><code>A &lt;a href=//google.com&gt;url&lt;/a&gt;</code></p>
-					<p><code>&lt;img src=/img/img.png alt='An Image'&gt;</code></p>
-				</div>
-				<p><label>Content:</label><br><textarea name="content" rows=4 cols=50 tabindex=4><?php echo htmlspecialchars($post['content']); ?></textarea></p>
+		<form action="" method=post>
+				<?php if($command == 'edit'){ echo '<input name=id type=hidden value="'.$post['id'].'">'; } ?>
+				<p><label>Title:<br><input type=text name=title id=title class=title <?php echo 'value="'. htmlspecialchars($post['title']) .'"'; ?>></label></p>
+				<p><label>Date <code>(YYYY-MM-DD HH:MM)</code>: <input type="text" name="date" value="<?php if(isset($post['date'])){ echo $post['date']; } else { echo date('Y-m-d G:i:s'); } ?>" /></label></p>
+				<p><label>Type: <select name=type><option value="article">Article</option><option value="page" <?php if($post['type']=='page'){ echo 'selected'; } ?>>Page</option></select></label></p>
+				<p><label>Content <code>(HTML for now)</code>:<br><textarea name="content" rows=4 cols=50><?php echo htmlspecialchars($post['content']); ?></textarea></label></p>
 				<!-- Generate category boxes -->
 				<?php
 					$categories = Database::return_array('SELECT * from `square_categories`', true);
@@ -29,12 +21,31 @@
 					}
 					}
 				?>
-				<p><label>Category 1:</label> <select name="category1" tabindex=5><option value="0"></option><?php echo $select1; ?></select>
-        <label>Category 2:</label> <select name="category2" tabindex=6><option value="0"></option><?php echo $select2; ?></select></p>
-				<p><label>URL <code>(if left blank will auto generate)</code>:</label> <input type="text" name="url" tabindex=7 value="<?php echo $post['url']; ?>" /></p>
-				<p><label>Status:</label> <select name="status" tabindex=8><option value="draft">Draft</option><option value="publish" <?php if($post['status']=='publish'){ echo 'selected'; } ?>>Publish</option></select></p>
-				<button name="<?php echo $command; ?>" type="submit" value="com" class="commit" tabindex=9>Commit</button>
+				<p><label>Category 1: <select name=category1><option value="0"></option><?php echo $select1; ?></select></label>
+        <label>Category 2: <select name=category2><option value="0"></option><?php echo $select2; ?></select></label></p>
+				<p><label>URL: <input type=text name=url id=url value="<?php echo $post['url']; ?>" /></label></p>
+				<p><label>Status: <select name=status><option value="draft">Draft</option><option value="publish" <?php if($post['status']=='publish'){ echo 'selected'; } ?>>Publish</option></select></label></p>
+				<button name="<?php echo $command; ?>" type="submit" value="com" class="commit">Commit</button>
 		</form>
 	</div>
 	<footer><small>sc v <?php echo Square::$version; ?></small></footer>
 </div>
+<script type='text/javascript'>//<![CDATA[
+window.onload=function(){
+var inputLtc = document.getElementById('title'),
+    inputBtc = document.getElementById('url');
+
+function convertToSlug(Text) {
+  return Text
+    .toLowerCase()
+    .replace(/[^\w ]+/g,'')
+    .replace(/ +/g,'-')
+    ;
+}
+
+inputLtc.onkeyup = function() {
+	inputBtc.value = convertToSlug(inputLtc.value).toLowerCase();
+};
+}//]]>
+
+</script>

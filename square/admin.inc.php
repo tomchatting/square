@@ -32,6 +32,7 @@
         td.action a:hover { background:url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoKIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNDAyIiB3aWR0aD0iNTgyIiB5PSItMSIgeD0iLTEiLz4KIDwvZz4KIDxnPgogIDx0aXRsZT5MYXllciAxPC90aXRsZT4KICA8cGF0aCBmaWxsPSIjZjQ0MzM2IiBpZD0ic3ZnXzEiIGQ9Im0yLDFsLTIsM2wyLDNsNiwwbDAsLTZsLTYsMHptMS41LDAuNzhsMS41LDEuNWwxLjUsLTEuNWwwLjcyLDAuNzJsLTEuNSwxLjVsMS41LDEuNWwtMC43MiwwLjcybC0xLjUsLTEuNWwtMS41LDEuNWwtMC43MiwtMC43MmwxLjUsLTEuNWwtMS41LC0xLjVsMC43MiwtMC43MnoiLz4KIDwvZz4KPC9zdmc+); }
         button {display: inline-block;border: none;background-color: #fff;color:#268bd2;border: solid #eee 1px;text-align: center;font-size: 16px;padding: 1rem;width: 100%;transition: all 0.5s;cursor: pointer;}
         button:hover {text-decoration: underline;background-color: #f5f5f5;}
+        select {padding:3px;}
       </style>';
 
       if (isset($_POST['username'])) {

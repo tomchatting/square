@@ -2,13 +2,17 @@
 
 Class Square {
 
+  # version is symantic where possible
   static $version = '2.0-alpha';
 
+  # set $site as a static so we can modify it and read it down the line
+  #   particularly in other classes
   static $site    = array(
     'title' => 'Blog',
     'version' => '2.0-alpha'
   );
 
+  # takes a file path as a variable and passes it to Pages::
   function create_page($file_path) {
 
     $path = $file_path[0];
@@ -22,11 +26,14 @@ Class Square {
 
   }
 
+  # in PHP/5.3.0 they added a requisite for setting a default timezone, this should be handled via the php.ini, but as we cannot rely on this, we have to set a default timezone ourselves
   function php_fixes() {
-    # in PHP/5.3.0 they added a requisite for setting a default timezone, this should be handled via the php.ini, but as we cannot rely on this, we have to set a default timezone ourselves
+
     if(function_exists('date_default_timezone_set')) date_default_timezone_set('Europe/London');
+
   }
 
+  # this is how we do it
   function __construct($get) {
 
     $this->php_fixes();
@@ -45,11 +52,11 @@ Class Square {
     self::$site['title'] = $setting['site_name'];
     self::$site['headline'] = $setting['tagline'];
     self::$site['url'] = str_replace('index.php', '', 'http://'.$domain.$_SERVER['PHP_SELF']);
+    self::$site['template'] = $setting['template'];
 
     $input = Helpers::get_url_input();
 
-    # make these cases instead of ifs
-
+    # set the input as 'archive', basically allows index to work
     if (!$input[0]) {$input[0] = 'page'; $input[1] = 1;}
 
     try {

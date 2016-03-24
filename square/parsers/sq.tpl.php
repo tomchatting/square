@@ -9,23 +9,26 @@
 
     static function parse($assigns, $page = 'page') {
 
-      $liquid = new LiquidTemplate('./square/templates/default/');
+      # build the template url based off the user's choice
+      $template_url = './square/templates/'.Square::$site['template'].'/';
+
+      $liquid = new LiquidTemplate($template_url);
 
       switch($page) {
         case 'article':
-          $liquid->parse(file_get_contents('./square/templates/default/post.tpl'));
+          $liquid->parse(file_get_contents($template_url.'post.tpl'));
           print $liquid->render($assigns);
           break;
         case 'p':
-          $liquid->parse(file_get_contents('./square/templates/default/page.tpl'));
+          $liquid->parse(file_get_contents($template_url.'page.tpl'));
           print $liquid->render($assigns);
           break;
         case 'categories':
-          $liquid->parse(file_get_contents('./square/templates/default/categories.tpl'));
+          $liquid->parse(file_get_contents($template_url.'categories.tpl'));
           print $liquid->render($assigns);
           break;
         default:
-          $liquid->parse(file_get_contents('./square/templates/default/index.tpl'));
+          $liquid->parse(file_get_contents($template_url.'index.tpl'));
           print $liquid->render($assigns);
       }
 
