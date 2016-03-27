@@ -8,8 +8,7 @@ Class Pages {
 
     function get_archives($page_title = "Archives") {
 
-      # Pull the results from post in blog order, limited to 6 (or "n") from the start value
-
+      # Pull the results from post in blog order
       $DateNow = gmdate("Y-m-d H:i:s");
 
       return Database::return_array("SELECT * FROM `square_posts` WHERE `date` <= '$DateNow' AND `status` = 'publish' AND `type` = 'article' ORDER BY `date` DESC, `id` DESC", true);
@@ -103,7 +102,7 @@ Class Pages {
           LEFT JOIN square_categories
             ON square_categories.id = square_posts.category1
           OR square_categories.id = square_posts.category2
-            WHERE square_categories.name LIKE '$request' ORDER BY `date` DESC", true);
+            WHERE square_categories.name = '$request' ORDER BY `date` DESC", true);
 
     $assigns['category'] = $q;
 
