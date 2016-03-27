@@ -53,8 +53,9 @@ Class Square {
     self::$site['headline'] = $setting['tagline'];
 
     # check to see if we're using htaccess and add a ?, otherwise spit out the url
-    self::$site['url'] = str_replace('index.php', '', 'http://'.$domain.$_SERVER['PHP_SELF'].file_exists('.htaccess') ? '?/');
+    self::$site['url'] = str_replace('index.php', '', file_exists('.htaccess') ? 'http://'.$domain.$_SERVER['PHP_SELF'] : 'http://'.$domain.$_SERVER['PHP_SELF'].'?/');
     self::$site['template'] = $setting['template'];
+    self::$site['template-url'] = str_replace('index.php', '', 'http://'.$domain.$_SERVER['PHP_SELF'].'square/templates/'.$setting['template'].'/');
 
     $input = Helpers::get_url_input();
 

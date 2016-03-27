@@ -1,12 +1,9 @@
 <IfModule mod_rewrite.c>
   RewriteEngine on
+  RewriteRule ^square/templates/* - [L,NC]
   RewriteCond $1 !^(index\.php|images|css|js|robots\.txt)
   RewriteCond %{REQUEST_URI} !(/$|\.)
   RewriteRule (.*) %{REQUEST_URI}/ [R=301,L]
   RewriteRule ^(.*)$ index.php [L]
-
-  <Directory /square/templates/*>
-    AllowOverride None
-  </Directory>
 </IfModule>
 ErrorDocument 404 /404.html
