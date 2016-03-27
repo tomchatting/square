@@ -81,6 +81,9 @@ Class Pages {
 
   static function categories($request) {
 
+    # support categories with spaces
+    $request = str_replace('%20', ' ', $request);
+
     $nav = Helpers::construct_nav();
 
     $p = Database::return_array("SELECT * from square_categories", true);
