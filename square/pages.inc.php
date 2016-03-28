@@ -8,8 +8,7 @@ Class Pages {
 
     function get_archives($page_title = "Archives") {
 
-      # Pull the results from post in blog order, limited to 6 (or "n") from the start value
-
+      # Pull the results from post in blog order
       $DateNow = gmdate("Y-m-d H:i:s");
 
       return Database::return_array("SELECT * FROM `square_posts` WHERE `date` <= '$DateNow' AND `status` = 'publish' AND `type` = 'article' ORDER BY `date` DESC, `id` DESC", true);
@@ -19,6 +18,12 @@ Class Pages {
     if ($request == 1) {$name = "Home";} else {$name = "Archives";}
 
     $result = get_archives($name);
+
+    $index = count($result);
+    while($index > 0) {
+      $result[--$index]['content'] = Parsedown::instance()->text($result[$index]['content']);
+    }
+
 
     $assigns = array(
     'site' => Square::$site,
@@ -50,6 +55,7 @@ Class Pages {
     }
 
     $result = get_article($request);
+    $result['content'] = Parsedown::instance()->text($result['content']);
 
     $assigns = array(
     'site' => Square::$site,
@@ -82,6 +88,9 @@ Class Pages {
 
   static function categories($request) {
 
+    # support categories with spaces
+    $request = str_replace('%20', ' ', $request);
+
     $nav = Helpers::construct_nav();
 
     $p = Database::return_array("SELECT * from square_categories", true);
@@ -103,7 +112,7 @@ Class Pages {
           LEFT JOIN square_categories
             ON square_categories.id = square_posts.category1
           OR square_categories.id = square_posts.category2
-            WHERE square_categories.name LIKE '$request' ORDER BY `date` DESC", true);
+            WHERE square_categories.name = '$request' ORDER BY `date` DESC", true);
 
     $assigns['category'] = $q;
 

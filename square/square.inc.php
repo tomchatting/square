@@ -49,10 +49,14 @@ Class Square {
     }
 
     $domain = preg_replace('#^www\.#', '', $_SERVER['SERVER_NAME']);
+    $url = str_replace('index.php', '', 'http://'.$domain.$_SERVER['PHP_SELF']);
     self::$site['title'] = $setting['site_name'];
     self::$site['headline'] = $setting['tagline'];
-    self::$site['url'] = str_replace('index.php', '', 'http://'.$domain.$_SERVER['PHP_SELF']);
+
+    # check to see if we're using htaccess and add a ?, otherwise spit out the url
+    self::$site['url'] = file_exists('.htaccess') ? $url : $url.'?/';
     self::$site['template'] = $setting['template'];
+    self::$site['template-url'] = $url.'square/templates/'.$setting['template'].'/';
 
     $input = Helpers::get_url_input();
 

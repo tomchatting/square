@@ -28,19 +28,31 @@ Class Helpers {
     Description: Returns anything in the URL after the 'destination' as an array of instructions
   */
   static function get_url_input() {
-    // Parse users input
+
+    # parse users input
     $uri = $_SERVER['REQUEST_URI'];
-    $uri = preg_replace('#\.html#','',$uri); 	// Strip any .html from the URL
-    $uri = preg_replace('#\.xhtml#','',$uri); 	// Strip any .xhtml from the URL
-    $uri = preg_replace('#\.php#','',$uri);		// Strip the .php from the URL (if there is one)
-    $uri = preg_replace('#\?\/#','',$uri); 		// Strip the ? from the URL (handling weird configs in Apache)
+    # Strip any .html from the URL
+    $uri = preg_replace('#\.html#','',$uri);
+
+    # Strip any .xhtml from the URL
+    $uri = preg_replace('#\.xhtml#','',$uri);
+
+    # Strip the .php from the URL (if there is one)
+    $uri = preg_replace('#\.php#','',$uri);
+
+    # Strip the ? from the URL (handling weird configs in Apache)
+    $uri = preg_replace('#\?\/#','',$uri);
     $temp = str_replace('/index.php', '', $_SERVER['PHP_SELF']);
     $uri = str_replace($temp, '', $uri);
 
     if ($uri[0] == '/') {
-      $uri = substr($uri, 1); // If the first character of input is "/" this might break our array
+      # If the first character of input is "/" this might break our array
+      $uri = substr($uri, 1);
     }
-    return explode('/',$uri); // Creates an array
+
+    # returns an array
+    return explode('/',$uri);
+
   }
 
   /*
