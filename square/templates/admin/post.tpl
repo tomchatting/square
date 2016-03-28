@@ -6,7 +6,7 @@
 				<p><label>Title:<br><input type=text name=title id=title class=title <?php echo 'value="'. htmlspecialchars($post['title']) .'"'; ?>></label></p>
 				<p><label>Date <code>(YYYY-MM-DD HH:MM)</code>: <input type="text" name="date" value="<?php if(isset($post['date'])){ echo $post['date']; } else { echo date('Y-m-d G:i:s'); } ?>" /></label></p>
 				<p><label>Type: <select name=type><option value="article">Article</option><option value="page" <?php if($post['type']=='page'){ echo 'selected'; } ?>>Page</option></select></label></p>
-				<p><label>Content <code>(HTML for now)</code>:<br><textarea name="content" rows=4 cols=50><?php echo htmlspecialchars($post['content']); ?></textarea></label></p>
+				<p><label>Content <code>(GitHub flavoured Parsedown!)</code>:<br><textarea name="content" rows=4 cols=50><?php echo htmlspecialchars($post['content']); ?></textarea></label></p>
 				<!-- Generate category boxes -->
 				<?php
 					$categories = Database::return_array('SELECT * from `square_categories`', true);

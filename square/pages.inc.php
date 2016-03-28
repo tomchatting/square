@@ -19,6 +19,12 @@ Class Pages {
 
     $result = get_archives($name);
 
+    $index = count($result);
+    while($index > 0) {
+      $result[--$index]['content'] = Parsedown::instance()->text($result[$index]['content']);
+    }
+
+
     $assigns = array(
     'site' => Square::$site,
     'page' => array(
@@ -49,6 +55,7 @@ Class Pages {
     }
 
     $result = get_article($request);
+    $result['content'] = Parsedown::instance()->text($result['content']);
 
     $assigns = array(
     'site' => Square::$site,
