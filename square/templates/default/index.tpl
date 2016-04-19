@@ -1,6 +1,6 @@
 {% include 'default' %}
 {% if posts %}
-{% paginate posts by 1 %}
+{% paginate posts by 5 %}
 {% for post in posts %}
 <article>
 

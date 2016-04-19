@@ -16,10 +16,11 @@ Class Square {
   function create_page($file_path) {
 
     $path = $file_path[0];
-    $request = $file_path[1];
+    $request = $file_path[4];
+    if (!$request) { $request = 1; }
 
     if(method_exists('Pages', $path)) {
-      Pages::$path($request);
+      Pages::$path($request, $file_path);
     } else {
       Pages::p($path);
     }

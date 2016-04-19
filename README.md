@@ -87,8 +87,7 @@ CREATE TABLE IF NOT EXISTS `square_posts` (
   `date` datetime NOT NULL,
   `status` varchar(7) DEFAULT 'draft',
   `blurb` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `url` (`url`)
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `square_settings` (
